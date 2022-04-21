@@ -1,0 +1,101 @@
+<div class="container">
+  <div class="row d-flex justify-content-center">
+    <div class="col-8">
+      <h2 class="p-3 text-center"> Zgłoszenie uczestnictwa w zajęciach sportowych </h2>
+      <form [formGroup]="membershipForm" (ngSubmit)="onSubmit()">
+
+        <div class="form-group">
+          <label for="name">Imię i nazwisko</label>
+          <input type="text" class="form-control" id="name" formControlName="memberName">
+          <div *ngIf="f['memberName'].touched && f['memberName'].invalid" class="alert alert-danger">
+            <div *ngIf="f['memberName'].errors">Name is required.</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input type="email" class="form-control" id="email" formControlName="email">
+          <div *ngIf="f['email'].touched && f['email'].invalid" class="alert alert-danger">
+            <div *ngIf="f['email'].errors">Email is required.</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Telefon</label>
+          <input type="text" class="form-control" id="phone" formControlName="phone">
+          <div *ngIf="f['phone'].touched && f['phone'].invalid" class="alert alert-danger">
+            <div *ngIf="f['phone'].errors">Email is required.</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="type">Status</label>
+          <select class="form-control" id="type" formControlName="membershipType">
+            <option *ngFor="let mtype of membershiptypes" [value]="mtype">{{mtype}}</option>
+          </select>
+          <div *ngIf="f['membershipType'].touched && f['membershipType'].invalid" class="alert alert-danger">
+            <div *ngIf="f['membershipType'].errors">Status is required.</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="mdate">Data zgłoszenia</label>
+          <input type="date" class="form-control" id="mdate" formControlName="mdate">
+        </div>
+
+        <div class="form-group">
+          <label>Rodzaj zajęć sportowych</label><br />
+          <div class="form-check form-check-inline" *ngFor="let exercise of getExercises.controls; let i = index">
+            <label class="form-check-label">
+              <input type="checkbox" class="form-check-input" [formControl]="$any(exercise)">
+              {{exercises[i].name}}
+            </label>
+          </div>
+          <div *ngIf="f['exerciseSelection'].touched && f['exerciseSelection'].invalid" class="alert alert-danger">
+            <div *ngIf="f['exerciseSelection'].errors">At least one exercise is required.</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Sposób płatności</label><br />
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="radio" name="payment" id="{{paymentMethods[0].id}}" value="{{paymentMethods[0].name}}"
+                class="form-check-input" formControlName="payment" checked="checked">
+              {{paymentMethods[0].name}}
+            </label>
+          </div>
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="radio" name="payment" id="{{paymentMethods[1].id}}" value="{{paymentMethods[1].name}}"
+                class="form-check-input" formControlName="payment">
+              {{paymentMethods[1].name}}
+            </label>
+          </div>
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="radio" name="payment" id="{{paymentMethods[2].id}}" value="{{paymentMethods[2].name}}"
+                class="form-check-input" formControlName="payment">
+              {{paymentMethods[2].name}}
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-success" [disabled]="!membershipForm.valid">Wyślij</button>
+      </form>
+    </div>
+  </div>
+  <hr>
+  <div *ngIf="submitted">
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-md-8">
+        <p>Name: {{member.name}}</p>
+        <p>E-mail: {{member.mail}}</p>
+        <p>Phone: {{member.phone}}</p>
+        <p>Membership Date: {{member.membershipDate | date:'dd/MM/yyyy'}}</p>
+        <p>Selected Exercises: {{member.exercises}}</p>
+        <p>Selected Payment Method: {{member.payment}}</p>
+      </div>
+    </div>
+  </div>
+</div>
